@@ -8,7 +8,7 @@ import { db } from "@/lib/firebase";
 import StatsCards from "@/components/dashboard/StatsCards";
 import VideoGrid from "@/components/dashboard/VideoGrid";
 import Link from "next/link";
-import type { JobDoc, SeriesDoc } from "@/types";
+import type { JobDoc, SeriesDoc } from "@/types/index";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -75,7 +75,7 @@ export default function DashboardPage() {
         <h1 className="text-2xl font-bold text-white">Dashboard</h1>
         <Link
           href="/dashboard/create"
-          className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-500"
+          className="rounded-xl bg-purple-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-purple-500"
         >
           + Create new video
         </Link>
@@ -92,7 +92,7 @@ export default function DashboardPage() {
             <p className="text-gray-400">No videos yet</p>
             <Link
               href="/dashboard/create"
-              className="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-500"
+              className="mt-4 rounded-lg bg-purple-600 px-4 py-2 text-sm text-white hover:bg-purple-500"
             >
               Create your first video
             </Link>

@@ -91,7 +91,7 @@ export const generateVideo = inngest.createFunction(
         progress: 70,
       });
 
-      const workerUrl = process.env.RAILWAY_WORKER_URL;
+      const workerUrl = process.env.RENDER_WORKER_URL;
       const workerSecret = process.env.WORKER_SECRET;
       const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 

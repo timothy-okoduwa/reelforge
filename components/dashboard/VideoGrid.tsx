@@ -13,18 +13,21 @@ import {
 import type { JobDoc } from "@/types";
 
 interface VideoGridProps {
-  videos: JobDoc[];
+  videos?: JobDoc[];
+  jobs?: JobDoc[];
+  onDelete?: (jobId: string) => Promise<void>;
 }
 
 type SortOption = "newest" | "oldest" | "status";
 type FilterOption = "all" | "queued" | "generating_images" | "generating_voice" | "rendering" | "complete" | "failed";
 
-export default function VideoGrid({ videos }: VideoGridProps) {
+export default function VideoGrid({ videos, jobs, onDelete }: VideoGridProps) {
+  const allVideos = videos || jobs || [];
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   const [filterBy, setFilterBy] = useState<FilterOption>("all");
 
   const filtered = useMemo(() => {
-    let result = [...videos];
+    let result = [...allVideos];
 
     if (filterBy !== "all") {
       result = result.filter((v) => v.status === filterBy);
@@ -44,7 +47,7 @@ export default function VideoGrid({ videos }: VideoGridProps) {
     });
 
     return result;
-  }, [videos, sortBy, filterBy]);
+  }, [allVideos, sortBy, filterBy]);
 
   return (
     <div>

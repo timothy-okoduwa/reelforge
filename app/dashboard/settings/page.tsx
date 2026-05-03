@@ -125,7 +125,7 @@ export default function SettingsPage() {
                 type="text"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                className="w-full max-w-md rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-indigo-500"
+                className="w-full max-w-md rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-purple-500"
               />
             </div>
             <div>
@@ -136,14 +136,14 @@ export default function SettingsPage() {
                 type="text"
                 value={photoURL}
                 onChange={(e) => setPhotoURL(e.target.value)}
-                className="w-full max-w-md rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-indigo-500"
+                className="w-full max-w-md rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-purple-500"
                 placeholder="https://example.com/photo.jpg"
               />
             </div>
             <button
               onClick={handleSaveProfile}
               disabled={saving}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-40"
+              className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-500 disabled:opacity-40"
             >
               {saving ? "Saving..." : "Save Profile"}
             </button>
@@ -159,7 +159,7 @@ export default function SettingsPage() {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <span className="text-sm text-gray-400">Current Plan:</span>
-                <span className="rounded-full bg-indigo-600/20 px-3 py-1 text-sm font-medium text-indigo-400">
+                <span className="rounded-full bg-purple-600/20 px-3 py-1 text-sm font-medium text-purple-400">
                   {PLAN_NAMES[userDoc.plan]}
                 </span>
               </div>
@@ -170,7 +170,7 @@ export default function SettingsPage() {
                 userDoc.plan !== "unlimited_forever" && (
                   <a
                     href="/pricing"
-                    className="inline-block rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500"
+                    className="inline-block rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-500"
                   >
                     Upgrade Plan
                   </a>
@@ -296,7 +296,7 @@ export default function SettingsPage() {
               <button
                 onClick={() => setNotifyVideoComplete((v) => !v)}
                 className={`relative h-6 w-11 rounded-full transition-colors ${
-                  notifyVideoComplete ? "bg-indigo-600" : "bg-white/10"
+                  notifyVideoComplete ? "bg-purple-600" : "bg-white/10"
                 }`}
               >
                 <span
@@ -316,7 +316,7 @@ export default function SettingsPage() {
               <button
                 onClick={() => setNotifyPostScheduled((v) => !v)}
                 className={`relative h-6 w-11 rounded-full transition-colors ${
-                  notifyPostScheduled ? "bg-indigo-600" : "bg-white/10"
+                  notifyPostScheduled ? "bg-purple-600" : "bg-white/10"
                 }`}
               >
                 <span
@@ -336,7 +336,7 @@ export default function SettingsPage() {
               <button
                 onClick={() => setNotifyWeeklyReport((v) => !v)}
                 className={`relative h-6 w-11 rounded-full transition-colors ${
-                  notifyWeeklyReport ? "bg-indigo-600" : "bg-white/10"
+                  notifyWeeklyReport ? "bg-purple-600" : "bg-white/10"
                 }`}
               >
                 <span

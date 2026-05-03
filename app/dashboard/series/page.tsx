@@ -168,7 +168,7 @@ export default function SeriesPage() {
         <h1 className="text-2xl font-bold text-white">Series</h1>
         <button
           onClick={() => setShowDialog(true)}
-          className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-500"
+          className="rounded-xl bg-purple-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-purple-500"
         >
           + Create new series
         </button>
@@ -193,7 +193,7 @@ export default function SeriesPage() {
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, name: e.target.value }))
                   }
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-indigo-500"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-purple-500"
                   placeholder="My Scary Stories Series"
                 />
               </div>
@@ -289,7 +289,7 @@ export default function SeriesPage() {
                       onClick={() => togglePlatform(p)}
                       className={`rounded-lg border px-3 py-1.5 text-sm capitalize transition-colors ${
                         form.platforms.includes(p)
-                          ? "border-indigo-500 bg-indigo-600 text-white"
+                          ? "border-purple-500 bg-purple-600 text-white"
                           : "border-white/10 text-gray-400 hover:bg-white/5"
                       }`}
                     >
@@ -310,7 +310,7 @@ export default function SeriesPage() {
               <button
                 onClick={handleCreate}
                 disabled={!form.name.trim()}
-                className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-40"
+                className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-500 disabled:opacity-40"
               >
                 Create Series
               </button>
@@ -335,7 +335,7 @@ export default function SeriesPage() {
           <p className="text-gray-400">No series yet</p>
           <button
             onClick={() => setShowDialog(true)}
-            className="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-500"
+            className="mt-4 rounded-lg bg-purple-600 px-4 py-2 text-sm text-white hover:bg-purple-500"
           >
             Create your first series
           </button>

@@ -26,7 +26,7 @@ export default function AdminDashboard() {
       setStats({
         totalUsers: usersSnap.size,
         totalVideos: jobsSnap.docs.filter((d) => d.data().status === "complete")
-          .size,
+          .length,
         activeSubs: paidUsers,
         revenue: paidUsers * 19,
       });

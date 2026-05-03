@@ -194,10 +194,10 @@ export default function CreateVideoPage() {
               <div
                 className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium ${
                   step === s
-                    ? "bg-indigo-600 text-white"
+                    ? "bg-purple-600 text-white"
                     : i <
                         ["niche", "style", "generate", "done"].indexOf(step)
-                      ? "bg-indigo-600/40 text-white"
+                      ? "bg-purple-600/40 text-white"
                       : "bg-white/10 text-gray-500"
                 }`}
               >
@@ -207,7 +207,7 @@ export default function CreateVideoPage() {
                 <div
                   className={`h-px w-8 ${
                     i < ["niche", "style", "generate", "done"].indexOf(step)
-                      ? "bg-indigo-600"
+                      ? "bg-purple-600"
                       : "bg-white/10"
                   }`}
                 />
@@ -246,7 +246,7 @@ export default function CreateVideoPage() {
           <button
             onClick={handleNicheNext}
             disabled={!nicheData.niche}
-            className="rounded-xl bg-indigo-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-indigo-500 disabled:opacity-40"
+            className="rounded-xl bg-purple-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-purple-500 disabled:opacity-40"
           >
             Next
           </button>
@@ -283,7 +283,7 @@ export default function CreateVideoPage() {
             <button
               onClick={handleStyleNext}
               disabled={!styleData.artStyle}
-              className="rounded-xl bg-indigo-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-indigo-500 disabled:opacity-40"
+              className="rounded-xl bg-purple-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-purple-500 disabled:opacity-40"
             >
               Generate Script
             </button>
@@ -296,7 +296,7 @@ export default function CreateVideoPage() {
         <div className="space-y-6">
           {generateData.generating === "script" && (
             <div className="flex flex-col items-center gap-4 py-12">
-              <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-indigo-500" />
+              <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-purple-500" />
               <p className="text-gray-400">Generating your script...</p>
             </div>
           )}
@@ -324,7 +324,7 @@ export default function CreateVideoPage() {
                 </button>
                 <button
                   onClick={handleGenerateVideo}
-                  className="rounded-xl bg-indigo-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-indigo-500"
+                  className="rounded-xl bg-purple-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-purple-500"
                 >
                   Generate Video
                 </button>
@@ -343,7 +343,7 @@ export default function CreateVideoPage() {
 
           {generateData.generating === "video" && !generateData.jobId && (
             <div className="flex flex-col items-center gap-4 py-12">
-              <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-indigo-500" />
+              <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-purple-500" />
               <p className="text-gray-400">Starting video generation...</p>
             </div>
           )}
@@ -370,7 +370,7 @@ export default function CreateVideoPage() {
             <a
               href={videoUrl}
               download
-              className="rounded-xl bg-indigo-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-indigo-500"
+              className="rounded-xl bg-purple-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-purple-500"
             >
               Download Video
             </a>
