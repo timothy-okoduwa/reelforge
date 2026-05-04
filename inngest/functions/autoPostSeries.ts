@@ -2,6 +2,16 @@
 import { inngest } from "../client";
 import { adminDb } from "@/lib/firebase-admin";
 
+interface SeriesData {
+  id: string;
+  userId: string;
+  niche: string;
+  artStyle: string;
+  platforms: string[];
+  frequency: string;
+  totalVideosPosted: number;
+}
+
 export const autoPostSeries = inngest.createFunction(
   { id: "auto-post-series" },
   { cron: "0 * * * *" },
@@ -15,19 +25,28 @@ export const autoPostSeries = inngest.createFunction(
         .where("nextPostAt", "<=", now)
         .get();
 
-      return snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      return snap.docs.map((doc) => {
+        const d = doc.data();
+        return {
+          id: doc.id,
+          userId: d.userId as string,
+          niche: d.niche as string,
+          artStyle: d.artStyle as string,
+          platforms: d.platforms as string[],
+          frequency: d.frequency as string,
+          totalVideosPosted: (d.totalVideosPosted as number) || 0,
+        } as SeriesData;
+      });
     });
 
     for (const series of seriesSnaps) {
       await step.run(`process-series-${series.id}`, async () => {
-        const userId = series.userId as string;
-
         await inngest.send({
           name: "reelforge/video.requested",
           data: {
             jobId: "",
             scriptId: "",
-            userId,
+            userId: series.userId,
             captionStyle: "bold_white",
             musicMood: "epic",
             niche: series.niche,
@@ -37,16 +56,15 @@ export const autoPostSeries = inngest.createFunction(
           },
         });
 
-        const freq = series.frequency as string;
         let nextDate = new Date(now);
-        if (freq === "daily") nextDate.setDate(nextDate.getDate() + 1);
-        else if (freq === "every2days") nextDate.setDate(nextDate.getDate() + 2);
+        if (series.frequency === "daily") nextDate.setDate(nextDate.getDate() + 1);
+        else if (series.frequency === "every2days") nextDate.setDate(nextDate.getDate() + 2);
         else nextDate.setDate(nextDate.getDate() + 7);
 
         await adminDb.collection("series").doc(series.id).update({
           lastPostAt: now,
           nextPostAt: nextDate,
-          totalVideosPosted: (series.totalVideosPosted || 0) + 1,
+          totalVideosPosted: series.totalVideosPosted + 1,
         });
       });
     }

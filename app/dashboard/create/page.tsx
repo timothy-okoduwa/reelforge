@@ -1,9 +1,9 @@
-// app/dashboard/create/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { useJobStatus } from "@/hooks/useJobStatus";
 import { db } from "@/lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import NicheSelector from "@/components/create/NicheSelector";
@@ -23,22 +23,21 @@ import type {
 type WizardStep = "niche" | "style" | "generate" | "done";
 
 interface StepNiche {
-  niche: Niche | null;
-  length: VideoLength;
-  language: Language;
+  niche: Niche | "";
+  length: VideoLength | "";
+  language: Language | "";
 }
 
 interface StepStyle {
-  artStyle: ArtStyle | null;
-  musicMood: MusicMood;
-  captionStyle: CaptionStyle;
+  artStyle: ArtStyle | "";
+  musicMood: MusicMood | "";
+  captionStyle: CaptionStyle | "";
 }
 
 interface StepGenerate {
   script: Script | null;
   scriptId: string | null;
   jobId: string | null;
-  progress: number;
   generating: "script" | "video" | null;
 }
 
@@ -48,12 +47,12 @@ export default function CreateVideoPage() {
 
   const [step, setStep] = useState<WizardStep>("niche");
   const [nicheData, setNicheData] = useState<StepNiche>({
-    niche: null,
+    niche: "",
     length: 60,
     language: "en",
   });
   const [styleData, setStyleData] = useState<StepStyle>({
-    artStyle: null,
+    artStyle: "",
     musicMood: "none",
     captionStyle: "bold_white",
   });
@@ -61,12 +60,28 @@ export default function CreateVideoPage() {
     script: null,
     scriptId: null,
     jobId: null,
-    progress: 0,
     generating: null,
   });
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Poll job status and transition to "done" when complete
+  const { status: jobStatus, videoUrl: jobVideoUrl, thumbnailUrl: jobThumbUrl, error: jobError } =
+    useJobStatus(generateData.jobId);
+
+  useEffect(() => {
+    if (jobStatus === "complete" && jobVideoUrl) {
+      setVideoUrl(jobVideoUrl);
+      setThumbnailUrl(jobThumbUrl);
+      setGenerateData((prev) => ({ ...prev, generating: null }));
+      setStep("done");
+    }
+    if (jobStatus === "failed" && jobError) {
+      setError(jobError);
+      setGenerateData((prev) => ({ ...prev, generating: null }));
+    }
+  }, [jobStatus, jobVideoUrl, jobThumbUrl, jobError]);
 
   const handleNicheNext = () => {
     if (!nicheData.niche) return;
@@ -86,7 +101,7 @@ export default function CreateVideoPage() {
   const generateScript = async () => {
     if (!user || !nicheData.niche || !styleData.artStyle) return;
 
-    setGenerateData((prev) => ({ ...prev, generating: "script", progress: 10 }));
+    setGenerateData((prev) => ({ ...prev, generating: "script" }));
     setError(null);
 
     try {
@@ -119,7 +134,6 @@ export default function CreateVideoPage() {
         script,
         scriptId,
         generating: null,
-        progress: 50,
       }));
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Script generation failed";
@@ -131,7 +145,7 @@ export default function CreateVideoPage() {
   const handleGenerateVideo = async () => {
     if (!user || !generateData.scriptId) return;
 
-    setGenerateData((prev) => ({ ...prev, generating: "video", progress: 60 }));
+    setGenerateData((prev) => ({ ...prev, generating: "video" }));
     setError(null);
 
     try {
@@ -159,25 +173,12 @@ export default function CreateVideoPage() {
       setGenerateData((prev) => ({
         ...prev,
         jobId: data.jobId,
-        progress: 70,
       }));
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Video generation failed";
       setError(message);
       setGenerateData((prev) => ({ ...prev, generating: null }));
     }
-  };
-
-  const handleVideoComplete = (url: string, thumb: string) => {
-    setVideoUrl(url);
-    setThumbnailUrl(thumb);
-    setGenerateData((prev) => ({ ...prev, generating: null, progress: 100 }));
-    setStep("done");
-  };
-
-  const handleVideoError = (msg: string) => {
-    setError(msg);
-    setGenerateData((prev) => ({ ...prev, generating: null }));
   };
 
   const handleSchedulePost = () => {
@@ -196,9 +197,9 @@ export default function CreateVideoPage() {
                   step === s
                     ? "bg-purple-600 text-white"
                     : i <
-                        ["niche", "style", "generate", "done"].indexOf(step)
-                      ? "bg-purple-600/40 text-white"
-                      : "bg-white/10 text-gray-500"
+                      ["niche", "style", "generate", "done"].indexOf(step)
+                    ? "bg-purple-600/40 text-white"
+                    : "bg-white/10 text-gray-500"
                 }`}
               >
                 {i + 1}
@@ -308,12 +309,14 @@ export default function CreateVideoPage() {
               </h2>
               <ScriptEditor
                 script={generateData.script}
-                onSave={async (updatedScript) => {
+                onScriptChange={(updatedScript) => {
                   setGenerateData((prev) => ({
                     ...prev,
                     script: updatedScript,
                   }));
                 }}
+                onRegenerate={generateScript}
+                isRegenerating={generateData.generating === "script"}
               />
               <div className="flex gap-3">
                 <button
@@ -333,12 +336,7 @@ export default function CreateVideoPage() {
           )}
 
           {generateData.generating === "video" && generateData.jobId && (
-            <VideoProgress
-              jobId={generateData.jobId}
-              progress={generateData.progress}
-              onComplete={handleVideoComplete}
-              onError={handleVideoError}
-            />
+            <VideoProgress jobId={generateData.jobId} />
           )}
 
           {generateData.generating === "video" && !generateData.jobId && (
@@ -387,7 +385,6 @@ export default function CreateVideoPage() {
                   script: null,
                   scriptId: null,
                   jobId: null,
-                  progress: 0,
                   generating: null,
                 });
                 setVideoUrl(null);

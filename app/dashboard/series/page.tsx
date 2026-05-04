@@ -14,7 +14,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import SeriesCard from "@/components/series/SeriesCard";
+import SeriesCard from "@/components/dashboard/SeriesCard";
 import type { SeriesDoc, Niche, ArtStyle, PostingFrequency } from "@/types";
 import { toast } from "sonner";
 

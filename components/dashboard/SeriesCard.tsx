@@ -1,13 +1,14 @@
-// components/dashboard/SeriesCard.tsx
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Trash2 } from "lucide-react";
 import type { SeriesDoc, PostingFrequency } from "@/types";
 
 interface SeriesCardProps {
   series: SeriesDoc;
   onToggleActive: (id: string, active: boolean) => void;
+  onDelete: (id: string) => void;
 }
 
 const frequencyLabels: Record<PostingFrequency, string> = {
@@ -22,7 +23,11 @@ const frequencyColors: Record<PostingFrequency, string> = {
   weekly: "bg-green-500/20 text-green-400 border-green-500/30",
 };
 
-export default function SeriesCard({ series, onToggleActive }: SeriesCardProps) {
+export default function SeriesCard({
+  series,
+  onToggleActive,
+  onDelete,
+}: SeriesCardProps) {
   const nextPost = series.nextPostAt
     ? new Date(series.nextPostAt.seconds * 1000).toLocaleString("en-US", {
         month: "short",
@@ -43,20 +48,30 @@ export default function SeriesCard({ series, onToggleActive }: SeriesCardProps) 
             <p className="text-xs text-gray-500 mt-1">{series.niche}</p>
           </div>
 
-          {/* Active / Paused toggle */}
-          <button
-            onClick={() => onToggleActive(series.id, !series.active)}
-            className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
-              series.active ? "bg-purple-600" : "bg-[#2a2a3e]"
-            }`}
-            aria-label={series.active ? "Pause series" : "Activate series"}
-          >
-            <span
-              className={`inline-block h-3.5 w-3.5 rounded-full bg-white shadow transition-transform ${
-                series.active ? "translate-x-4.5" : "translate-x-1"
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => onDelete(series.id)}
+              className="text-gray-500 hover:text-red-400 transition-colors"
+              aria-label="Delete series"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+
+            {/* Active / Paused toggle */}
+            <button
+              onClick={() => onToggleActive(series.id, series.active)}
+              className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
+                series.active ? "bg-purple-600" : "bg-[#2a2a3e]"
               }`}
-            />
-          </button>
+              aria-label={series.active ? "Pause series" : "Activate series"}
+            >
+              <span
+                className={`inline-block h-3.5 w-3.5 rounded-full bg-white shadow transition-transform ${
+                  series.active ? "translate-x-4.5" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-2 mt-3">

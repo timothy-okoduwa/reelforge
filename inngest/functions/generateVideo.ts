@@ -4,7 +4,15 @@ import { adminDb } from "@/lib/firebase-admin";
 import { generateImage } from "@/lib/pollinations";
 import { generateAudio } from "@/lib/tts";
 import { cloudinary } from "@/lib/cloudinary";
-import type { Scene } from "@/types/index";
+
+interface SceneData {
+  id: number;
+  narration: string;
+  imagePrompt: string;
+  durationSeconds: number;
+  imageUrl?: string;
+  audioUrl?: string | null;
+}
 
 export const generateVideo = inngest.createFunction(
   { id: "generate-video", retries: 2 },
@@ -14,12 +22,12 @@ export const generateVideo = inngest.createFunction(
 
     const scriptSnap = await step.run("get-script", async () => {
       const snap = await adminDb.collection("scripts").doc(scriptId).get();
-      return snap.data();
+      return snap.data() as Record<string, unknown> | undefined;
     });
 
     if (!scriptSnap) throw new Error("Script not found");
 
-    const scenes = scriptSnap.scenes as Scene[];
+    const scenes = scriptSnap.scenes as SceneData[];
 
     await step.run("update-generating-images", async () => {
       await adminDb.collection("jobs").doc(jobId).update({
@@ -29,7 +37,7 @@ export const generateVideo = inngest.createFunction(
     });
 
     const scenesWithImages = await step.run("generate-images", async () => {
-      const updated: Scene[] = [];
+      const updated: SceneData[] = [];
       for (let i = 0; i < scenes.length; i++) {
         const scene = scenes[i];
         try {
@@ -64,7 +72,7 @@ export const generateVideo = inngest.createFunction(
     });
 
     const scenesWithAudio = await step.run("generate-audio", async () => {
-      const updated: typeof scenesWithImages = [];
+      const updated: SceneData[] = [];
       for (let i = 0; i < scenesWithImages.length; i++) {
         const scene = scenesWithImages[i];
         const audioBuffer = await generateAudio(scene.narration);
@@ -97,7 +105,7 @@ export const generateVideo = inngest.createFunction(
 
       const renderPayload = {
         jobId,
-        scenes: scenesWithAudio.map((s) => ({
+        scenes: scenesWithAudio.map((s: SceneData) => ({
           imageUrl: s.imageUrl || "",
           audioUrl: s.audioUrl || null,
           durationSeconds: s.durationSeconds,
