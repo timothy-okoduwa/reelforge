@@ -17,10 +17,10 @@ import { useState } from "react";
 
 const links = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/create", label: "Create Video", icon: Film },
-  { href: "/library", label: "Library", icon: Library },
-  { href: "/series", label: "Series", icon: Repeat },
-  { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/dashboard/create", label: "Create Video", icon: Film },
+  { href: "/dashboard/library", label: "Library", icon: Library },
+  { href: "/dashboard/series", label: "Series", icon: Repeat },
+  { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
 export default function Sidebar() {
@@ -78,7 +78,9 @@ export default function Sidebar() {
         {/* Navigation */}
         <nav className="flex-1 px-2 py-4 space-y-1">
           {links.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive = link.href === "/dashboard"
+      ? pathname === "/dashboard"
+      : pathname.startsWith(link.href);
             return (
               <Link
                 key={link.href}
