@@ -8,9 +8,9 @@ import { uploadToCloudinary } from "./cloudinary";
 import { getCaptionFilter } from "./captions";
 import { getMusicUrl } from "./music";
 
-if (ffmpegStatic) {
-  ffmpeg.setFfmpegPath(ffmpegStatic);
-}
+// Use bundled ffmpeg-static if available, otherwise fall back to system ffmpeg
+const ffmpegPath = ffmpegStatic || "ffmpeg";
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 interface SceneInput {
   imageUrl: string;

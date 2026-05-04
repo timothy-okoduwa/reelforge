@@ -2,7 +2,7 @@
 
 export async function generateScript(
   prompt: string,
-  systemPrompt: string
+  systemPrompt: string,
 ): Promise<string> {
   const response = await fetch(
     "https://openrouter.ai/api/v1/chat/completions",
@@ -11,7 +11,8 @@ export async function generateScript(
       headers: {
         Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "https://reelforge.app",
+        "HTTP-Referer":
+          process.env.NEXT_PUBLIC_APP_URL || "https://reelforgee.vercel.app/",
       },
       body: JSON.stringify({
         model: "deepseek/deepseek-chat",
@@ -22,7 +23,7 @@ export async function generateScript(
         temperature: 0.9,
         max_tokens: 2000,
       }),
-    }
+    },
   );
 
   if (!response.ok) {

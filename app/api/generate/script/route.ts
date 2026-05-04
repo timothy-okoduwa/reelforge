@@ -1,5 +1,4 @@
-// app/api/generate/script/route.ts
-import { adminAuth, adminDb } from "@/lib/firebase-admin";
+import { admin, adminAuth, adminDb } from "@/lib/firebase-admin";
 import { generateScript } from "@/lib/openrouter";
 import type { GenerateScriptRequest, Niche, ArtStyle, Language, VideoLength } from "@/types/index";
 
@@ -48,12 +47,14 @@ Rules:
 - Make it engaging, with a hook in the first scene and a satisfying conclusion`;
 
     const content = await generateScript(userPrompt, systemPrompt);
+    console.log("OpenRouter raw response length:", content?.length);
 
     let parsed;
     try {
       const cleaned = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
       parsed = JSON.parse(cleaned);
-    } catch {
+    } catch (parseErr) {
+      console.error("Failed to parse AI script output:", content?.slice(0, 500));
       return Response.json({ error: "Failed to parse AI script output" }, { status: 500 });
     }
 
@@ -68,11 +69,12 @@ Rules:
       scenes: parsed.scenes,
       totalDuration: parsed.totalDuration,
       musicMood: parsed.musicMood,
-      createdAt: new Date(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
     return Response.json({ scriptId: scriptRef.id, script: parsed });
   } catch (err) {
+    console.error("Script generation error:", err);
     return Response.json(
       { error: err instanceof Error ? err.message : "Unknown error" },
       { status: 500 }
