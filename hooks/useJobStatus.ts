@@ -1,7 +1,7 @@
-// hooks/useJobStatus.ts
 "use client";
 
 import { useState, useEffect } from "react";
+import { auth } from "@/lib/firebase";
 import type { JobStatus } from "@/types/index";
 
 interface JobStatusReturn {
@@ -29,7 +29,14 @@ export function useJobStatus(jobId: string | null): JobStatusReturn {
 
     const interval = setInterval(async () => {
       try {
-        const res = await fetch(`/api/jobs/${jobId}/status`);
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const idToken = await user.getIdToken();
+        const res = await fetch(`/api/jobs/${jobId}/status`, {
+          headers: { Authorization: `Bearer ${idToken}` },
+        });
+
         if (res.ok) {
           const data = await res.json();
           setStatus(data.status);

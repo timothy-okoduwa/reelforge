@@ -20,6 +20,7 @@
    - Firestore → users → find your uid → Edit → Add field: `isAdmin: true` (boolean)
    - Also add: `plan: "free"`, `videosThisMonth: 0`, `isUnlimited: false`, `banned: false`, `lastResetDate: "2026-05"`
 8. Create the `config/plans` doc:
+
 ```json
 {
   "free": { "videosPerMonth": 5, "autoPost": false, "platforms": [] },
@@ -40,7 +41,9 @@
   }
 }
 ```
+
 9. Create the `config/stats` doc:
+
 ```json
 {
   "totalUsers": 0,
@@ -176,34 +179,34 @@
 
 ## Environment Variables Summary
 
-| Variable | Where to get it |
+| Variable                                   | Where to get it                                          |
 | ------------------------------------------ | -------------------------------------------------------- |
-| `OPENROUTER_API_KEY` | https://openrouter.ai → Keys |
-| `CLOUDINARY_CLOUD_NAME` | Cloudinary dashboard |
-| `CLOUDINARY_API_KEY` | Cloudinary dashboard |
-| `CLOUDINARY_API_SECRET` | Cloudinary dashboard |
-| `NEXT_PUBLIC_FIREBASE_API_KEY` | Firebase → Project Settings → Web app |
-| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | Firebase → Project Settings → Web app |
-| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | Firebase → Project Settings → Web app |
-| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | Firebase → Project Settings → Web app |
-| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Firebase → Project Settings → Web app |
-| `NEXT_PUBLIC_FIREBASE_APP_ID` | Firebase → Project Settings → Web app |
-| `FIREBASE_SERVICE_ACCOUNT_JSON` | Firebase → Service Accounts → Generate key (stringified) |
-| `LEMON_SQUEEZY_API_KEY` | Lemon Squeezy → Settings → API |
-| `LEMON_SQUEEZY_STORE_ID` | Lemon Squeezy → Settings → Store |
-| `LEMON_SQUEEZY_WEBHOOK_SECRET` | Lemon Squeezy → Settings → Webhooks |
-| `LEMON_SQUEEZY_VARIANT_STARTER` | Lemon Squeezy → Product → Starter variant |
-| `LEMON_SQUEEZY_VARIANT_PRO` | Lemon Squeezy → Product → Pro variant |
-| `LEMON_SQUEEZY_VARIANT_UNLIMITED` | Lemon Squeezy → Product → Unlimited variant |
-| `INNGEST_EVENT_KEY` | Inngest → App settings |
-| `INNGEST_SIGNING_KEY` | Inngest → App settings |
-| `WORKER_SECRET` | Random string you choose |
-| `RENDER_WORKER_URL` | Render deployment URL |
-| `NEXT_PUBLIC_APP_URL` | Your Vercel production URL |
-| `TIKTOK_CLIENT_KEY` | TikTok Developer Portal |
-| `TIKTOK_CLIENT_SECRET` | TikTok Developer Portal |
-| `META_APP_ID` | Meta Developer Portal |
-| `META_APP_SECRET` | Meta Developer Portal |
-| `YOUTUBE_CLIENT_ID` | Google Cloud Console |
-| `YOUTUBE_CLIENT_SECRET` | Google Cloud Console |
-| `ELEVENLABS_API_KEY` | ElevenLabs dashboard |
+| `OPENROUTER_API_KEY`                       | https://openrouter.ai → Keys                             |
+| `CLOUDINARY_CLOUD_NAME`                    | Cloudinary dashboard                                     |
+| `CLOUDINARY_API_KEY`                       | Cloudinary dashboard                                     |
+| `CLOUDINARY_API_SECRET`                    | Cloudinary dashboard                                     |
+| `NEXT_PUBLIC_FIREBASE_API_KEY`             | Firebase → Project Settings → Web app                    |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`         | Firebase → Project Settings → Web app                    |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID`          | Firebase → Project Settings → Web app                    |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`      | Firebase → Project Settings → Web app                    |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Firebase → Project Settings → Web app                    |
+| `NEXT_PUBLIC_FIREBASE_APP_ID`              | Firebase → Project Settings → Web app                    |
+| `FIREBASE_SERVICE_ACCOUNT_JSON`            | Firebase → Service Accounts → Generate key (stringified) |
+| `LEMON_SQUEEZY_API_KEY`                    | Lemon Squeezy → Settings → API                           |
+| `LEMON_SQUEEZY_STORE_ID`                   | Lemon Squeezy → Settings → Store                         |
+| `LEMON_SQUEEZY_WEBHOOK_SECRET`             | Lemon Squeezy → Settings → Webhooks                      |
+| `LEMON_SQUEEZY_VARIANT_STARTER`            | Lemon Squeezy → Product → Starter variant                |
+| `LEMON_SQUEEZY_VARIANT_PRO`                | Lemon Squeezy → Product → Pro variant                    |
+| `LEMON_SQUEEZY_VARIANT_UNLIMITED`          | Lemon Squeezy → Product → Unlimited variant              |
+| `INNGEST_EVENT_KEY`                        | Inngest → App settings                                   |
+| `INNGEST_SIGNING_KEY`                      | Inngest → App settings                                   |
+| `WORKER_SECRET`                            | Random string you choose                                 |
+| `RENDER_WORKER_URL`                        | Render deployment URL                                    |
+| `NEXT_PUBLIC_APP_URL`                      | Your Vercel production URL                               |
+| `TIKTOK_CLIENT_KEY`                        | TikTok Developer Portal                                  |
+| `TIKTOK_CLIENT_SECRET`                     | TikTok Developer Portal                                  |
+| `META_APP_ID`                              | Meta Developer Portal                                    |
+| `META_APP_SECRET`                          | Meta Developer Portal                                    |
+| `YOUTUBE_CLIENT_ID`                        | Google Cloud Console                                     |
+| `YOUTUBE_CLIENT_SECRET`                    | Google Cloud Console                                     |
+| `ELEVENLABS_API_KEY`                       | ElevenLabs dashboard                                     |
