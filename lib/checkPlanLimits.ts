@@ -1,6 +1,12 @@
-// lib/checkPlanLimits.ts
 import { adminDb } from "./firebase-admin";
 import type { Plan, UserDoc, PlansConfig } from "@/types/index";
+
+const DEFAULT_PLANS: PlansConfig = {
+  free: { videosPerMonth: 5, autoPost: false, platforms: [] },
+  starter: { videosPerMonth: 30, autoPost: true, platforms: ["tiktok", "instagram"] },
+  pro: { videosPerMonth: 150, autoPost: true, platforms: ["tiktok", "instagram", "youtube"] },
+  unlimited: { videosPerMonth: 999999, autoPost: true, platforms: ["tiktok", "instagram", "youtube"] },
+};
 
 export async function checkPlanLimits(
   userId: string
@@ -16,7 +22,7 @@ export async function checkPlanLimits(
     return { allowed: false, reason: "Account suspended", plan: user.plan };
   }
 
-  const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
+  const currentMonth = new Date().toISOString().slice(0, 7);
 
   if (user.lastResetDate !== currentMonth) {
     await adminDb.collection("users").doc(userId).update({
@@ -30,11 +36,7 @@ export async function checkPlanLimits(
   }
 
   const plansSnap = await adminDb.collection("config").doc("plans").get();
-  const plans = plansSnap.data() as PlansConfig | undefined;
-
-  if (!plans) {
-    return { allowed: false, reason: "Plan config not found", plan: user.plan };
-  }
+  const plans = (plansSnap.exists ? plansSnap.data() : DEFAULT_PLANS) as PlansConfig;
 
   const planConfig = plans[user.plan as keyof PlansConfig];
   if (!planConfig) {
